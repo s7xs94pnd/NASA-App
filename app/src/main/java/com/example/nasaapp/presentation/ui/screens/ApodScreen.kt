@@ -38,7 +38,6 @@ fun ApodScreen(viewModel: ApodViewModel) {
                 CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
             }
         }
-
         is ApodState.Success -> {
             val apod = (apodState as ApodState.Success).apod
             Log.d("ApodScreen", "APOD data fetched successfully: $apod")
