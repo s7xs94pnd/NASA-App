@@ -26,6 +26,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+        debug {
+            buildConfigField("String", "BASE_URL", "\"https://api.nasa.gov/\"")
+            buildConfigField("String", "API", "\"pThekNxktbcLzCN4d2gbqgh3PUelSgNzpCCpXF2H\"")
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -44,18 +48,29 @@ dependencies {
 
     //Retrofit
     implementation (libs.retrofit)
+
     // gson converter
     implementation (libs.converter.gson)
+
     // Koin for DI
-    implementation("io.insert-koin:koin-android:4.0.1")
-    implementation("io.insert-koin:koin-androidx-compose:3.5.0")
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
 
     // Coil for image loading
-    implementation("io.coil-kt.coil3:coil-compose:3.1.0")
-    implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
 
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+    //Coroutines
+    implementation (libs.kotlinx.coroutines.core)
+    implementation (libs.kotlinx.coroutines.android)
+
+
+    // define a BOM and its version
+    implementation(platform(libs.okhttp.bom))
+    //okhttp3
+    implementation(libs.okhttp)
+    //interceptor
+    implementation(libs.logging.interceptor)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -67,7 +82,18 @@ dependencies {
     implementation(libs.androidx.material3)
 
 
-    testImplementation(libs.junit)
+    // Testing dependencies
+    testImplementation (libs.mockito.core)
+    testImplementation (libs.mockito.inline)
+    testImplementation (libs.junit)
+
+    // Coroutines test dependencies
+    testImplementation (libs.kotlinx.coroutines.test)
+
+    // LiveData test dependencies
+    testImplementation (libs.androidx.core.testing)
+
+    // AndroidX Test dependencies
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

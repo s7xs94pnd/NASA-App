@@ -3,13 +3,13 @@ package com.example.nasaapp.presentation.ui.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.nasaapp.data.repository.ApodRepository
 import com.example.nasaapp.data.dto.ApodResponse
+import com.example.nasaapp.domain.usecase.GetApodUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class ApodViewModel(private val repository: ApodRepository) : ViewModel() {
+class ApodViewModel(private val getApodUseCase: GetApodUseCase) : ViewModel() {
 
     private val _apodState = MutableStateFlow<ApodState>(ApodState.Loading)
     val apodState: StateFlow<ApodState> get() = _apodState
@@ -19,7 +19,7 @@ class ApodViewModel(private val repository: ApodRepository) : ViewModel() {
         viewModelScope.launch {
             try {
                 Log.d("ApodViewModel", "Fetching APOD data...")
-                val response = repository.getApod(apiKey, date)
+                val response = getApodUseCase(apiKey, date)
                 _apodState.value = ApodState.Success(response)
                 Log.d("ApodViewModel", "APOD data fetched successfully: $response")
             } catch (e: Exception) {
